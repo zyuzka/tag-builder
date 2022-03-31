@@ -1,0 +1,12 @@
+{
+    "name": "zyuzka/tag-builder",
+    "autoload": {
+        "psr-4": {
+            "TagBuilder\\": "src/"
+        }
+    },
+    "require": {
+        "symfony/finder": "^6.0",
+        "symfony/yaml": "^6.0"
+    }
+}
