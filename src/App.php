@@ -2,6 +2,8 @@
 
 namespace TagBuilder;
 
+use TagBuilder\Arguments\ArgumentBuilder;
+
 class App
 {
     /**
@@ -20,16 +22,20 @@ class App
     }
 
     /**
-     * @param string $actionName
+     * @param array $arguments
      *
      * @return void
      */
-    public function run(string $actionName): void
+    public function run(array $arguments): void
     {
+        $argumentCollection = (new ArgumentBuilder())->build($arguments);
+
+        $this->configureApplication($argumentCollection);
+
         $actionNames = [];
 
         foreach ($this->factory->getActions() as $action) {
-            if ($action->getName() == $actionName) {
+            if ($action->getName() == $argumentCollection[TagBuilderConstants::ACTION_KEY]) {
                 $action->run();
 
                 return;
@@ -51,9 +57,26 @@ class App
         $errorMessege = static::ERROR_MSG;
 
         foreach ($actionNames as $actionName) {
-            $errorMessege.= ' * ' . $actionName . PHP_EOL;
+            $errorMessege .= ' * ' . $actionName . PHP_EOL;
         }
 
         return $errorMessege;
+    }
+
+    /**
+     * @param array $argumentCollection
+     *
+     * @return void
+     */
+    protected function configureApplication(array $argumentCollection): void
+    {
+        $this->factory = new TagBuilderFactory();
+
+        $config = new TagBuilderConfig(
+            $argumentCollection[TagBuilderConstants::CONFIG_FILE_PATH_KEY],
+            $this->factory->createSymfonyYaml()
+        );
+
+        $this->factory = $this->factory->setConfig($config);
     }
 }

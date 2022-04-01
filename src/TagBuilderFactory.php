@@ -7,15 +7,19 @@ use Symfony\Component\Yaml\Yaml;
 use TagBuilder\Action\ActionInterface;
 use TagBuilder\Action\BuildAction;
 use TagBuilder\Action\CheckAction;
+use TagBuilder\Arguments\ArgumentBuilder;
+use TagBuilder\Arguments\ArgumentBuilderInterface;
 
 class TagBuilderFactory
 {
+    private $config;
+
     /**
      * @return ActionInterface[]
      */
     public function getActions(): array
     {
-        $config = $this->createConfig();
+        $config = $this->getConfig();
 
         return [
             new BuildAction($config),
@@ -26,9 +30,9 @@ class TagBuilderFactory
     /**
      * @return TagBuilderConfig
      */
-    public function createConfig(): TagBuilderConfig
+    public function getConfig(): TagBuilderConfig
     {
-        return new TagBuilderConfig($this->createSymfonyYaml());
+        return $this->config;
     }
 
     /**
@@ -45,6 +49,18 @@ class TagBuilderFactory
     public function createSymfonyFinder(): Finder
     {
         return new Finder();
+    }
+
+    /**
+     * @param TagBuilderConfig $config
+     *
+     * @return TagBuilderFactory
+     */
+    public function setConfig(TagBuilderConfig $config): self
+    {
+        $this->config = $config;
+
+        return $this;
     }
 
 }

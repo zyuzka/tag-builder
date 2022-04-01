@@ -10,11 +10,6 @@ class TagBuilderConfig
     /**
      * @var string
      */
-    protected const CONFIG_FILE_PATH = APPLICATION_ROOT . '/config.yml';
-
-    /**
-     * @var string
-     */
     protected const ORGANISATION_ENV_NAME = 'ORGANISATION';
 
     /**
@@ -36,12 +31,18 @@ class TagBuilderConfig
      * @var Yaml
      */
     private $yamlReader;
+    /**
+     * @var string
+     */
+    private $configFilePath;
 
     /**
+     * @param string $configFilePath
      * @param Yaml $yamlReader
      */
-    public function __construct(Yaml $yamlReader)
+    public function __construct(string $configFilePath, Yaml $yamlReader)
     {
+        $this->configFilePath = $configFilePath;
         $this->yamlReader = $yamlReader;
     }
 
@@ -50,7 +51,7 @@ class TagBuilderConfig
      */
     public function getTagsConfig(): array
     {
-        return $this->yamlReader->parseFile(static::CONFIG_FILE_PATH)[static::TAGS_KEY] ?? [];
+        return $this->yamlReader->parseFile($this->configFilePath)[static::TAGS_KEY] ?? [];
     }
 
     /**
@@ -58,7 +59,7 @@ class TagBuilderConfig
      */
     public function getSearchDirs(): array
     {
-        return $this->yamlReader->parseFile(static::CONFIG_FILE_PATH)[static::DIRS_KEY] ?? [APPLICATION_ROOT];
+        return $this->yamlReader->parseFile($this->configFilePath)[static::DIRS_KEY] ?? [APPLICATION_ROOT];
     }
 
     /**
@@ -66,7 +67,7 @@ class TagBuilderConfig
      */
     public function getTagFormat(): string
     {
-        return $this->yamlReader->parseFile(static::CONFIG_FILE_PATH)[static::TAG_FORMAT_KEY] ?? '';
+        return $this->yamlReader->parseFile($this->configFilePath)[static::TAG_FORMAT_KEY] ?? '';
     }
 
     /**
