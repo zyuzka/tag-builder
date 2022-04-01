@@ -1,12 +1,18 @@
 {
-    "name": "zyuzka/tag-builder",
-    "autoload": {
-        "psr-4": {
-            "TagBuilder\\": "src/"
-        }
-    },
-    "require": {
-        "symfony/finder": "^6.0",
-        "symfony/yaml": "^6.0"
+  "name": "zyuzka/tag-builder",
+  "autoload": {
+    "psr-4": {
+      "TagBuilder\\": "src/"
     }
+  },
+  "require": {
+    "php": ">=7.4",
+    "symfony/yaml": "^5.4",
+    "symfony/finder": "^5.4"
+  },
+  "config": {
+    "platform": {
+      "php": "7.4"
+    }
+  }
 }
